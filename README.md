@@ -3,7 +3,8 @@
 - To create a child process we have to create a child function with its own pid such that the child thinks that there is no other process runing.We do that by calling the clone() function with the CLONE_NEWPID flag.We can also use a different system call called unshare to do similar task.Once we call clone(), is called with the flag added, the new process starts within a new PID namespace, under a new process tree.
 - We can add many flags to the clone() function depending on what we want to be isolated from the containter point of view.
 
-```int clone_flags = CLONE_NEWUSER|CLONE_NEWPID|CLONE_NEWNS|CLONE_NEWNET|SIGCHLD;
+```
+int clone_flags = CLONE_NEWUSER|CLONE_NEWPID|CLONE_NEWNS|CLONE_NEWNET|SIGCHLD;
 ```
 
 ## Isolate it using namespaces
@@ -19,6 +20,7 @@ Then we can run the binary with sudo priviledge.
 
 
 - I supplied flags for this PoC, the flag CLONE_NEWUTC is for container hostname, where when clone() is called it allow the container have its own hostname as in the snippet below.I also added some C code to give the container a custom name.
+
 ```
  // sethostname
         const char * new_hostname = "my container";
