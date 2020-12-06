@@ -24,6 +24,8 @@ Then we can run the binary with sudo priviledge.
 
 ![](images/ronoparentpid.png)
 
+![](images/roconex.png)
+
 - I supplied flags for this PoC, the flag CLONE_NEWUTC is for container hostname, where when clone() is called it allow the container have its own hostname as in the snippet below.I also added some C code to give the container a custom name.
 
 ```
