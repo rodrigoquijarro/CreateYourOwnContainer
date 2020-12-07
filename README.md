@@ -228,6 +228,9 @@ int main(int argc, char** argv) {
 }
 
 ```
+![](images/isofilesystem.png)
+
+
 
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
