@@ -8,13 +8,21 @@ The objetive of this lab is to create our own container, this will be done using
 
 To create a new process we are going to create a new process and execute another one inside, in this way we can keep the control of the process. The process will be called `rod`
 ```
-  +----------+  
-  | parent   |
-  |----------|
-  | main()   |
-  |----------|
-  | rod()    |  
-  +----------+
+             +----------+  
+             | parent   |
+             |----------|
+      -----  | main()   |
+      |      |----------|
+      |      | rod()    |  
+      |      +----------+
+      v 
+  +--------+             +--------+
+  | parent |             |  copy  |
+  |--------|             |--------|
+  | main() |  clone -->  | rod()  |
+  |--------|             +--------+                     
+  | rod()  |              
+  +--------+       
 ```  
 ## Creating a child process
 
@@ -37,6 +45,11 @@ int main(int argc, char** argv) {
 }
 ```
 ![](images/process.png)
+
+
+We will load a shell program to test what is inside the container. To do this we will ue the funtion execvp, which will replace the current process (child) with a instance of the program.
+
+
 ## Isolate it using namespaces
 - This new process is isolated using the CLONE_NEWPID flag.this helps the process to see only this pid.
 
