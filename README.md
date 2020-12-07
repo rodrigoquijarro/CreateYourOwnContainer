@@ -17,11 +17,24 @@ To create a new process we are going to create a new process and execute another
   +----------+
 ```  
 ## Creating a child process
-- To create a child process we have to create a child function with its own pid such that the child thinks that there is no other process runing.We do that by calling the clone() function with the CLONE_NEWPID flag.We can also use a different system call called unshare to do similar task.Once we call clone(), is called with the flag added, the new process starts within a new PID namespace, under a new process tree.
-- We can add many flags to the clone() function depending on what we want to be isolated from the containter point of view.
+
+To create the child process we will invoke the system call using the clone system call.
+
+To perform `clone` we will provide some memory for the new process to run, creating a function to allocate 65536 bytes. Many modern CPUs allow a memory page size of 64KiB:
 
 ```
-int clone_flags = CLONE_NEWUSER|CLONE_NEWPID|CLONE_NEWNS|CLONE_NEWNET|SIGCHLD;
+int jail(void *args) {
+  printf("Hello !! ( child ) \n");
+  return EXIT_SUCCESS;
+}
+
+int main(int argc, char** argv) {
+  printf("Hello, World! ( parent ) \n");
+
+  clone(jail, stack_memory(), SIGCHLD, 0);
+  wait(nullptr);
+  return EXIT_SUCCESS;
+}
 ```
 
 ## Isolate it using namespaces
