@@ -135,11 +135,11 @@ The new process will be isolated with the CLONE_NEWPID, identified with only thi
 
 - CLONE_NEWNET, is used for Networking, allowing the container just to look it's own network designed interface (loopback).
 
-
 I supplied flags for this PoC, the flag CLONE_NEWUTC is for container hostname, where when clone() is called it allow the container have its own hostname as in the snippet below.I also added some C code to give the container a custom name.
 
-
 - Below we can see the network interface for the child process with respect to that of the main host. 
+
+![](images/networking.png)
 
 - But for us to make the two processes , parent and child process each manage thier network interfaces, we need to create a pair of virtual Ethernet connections using the following command:
 
@@ -149,9 +149,11 @@ ip link add name veth0 type veth peer name veth1 netns <pid>
 
 For example for the pid 4 found in /proc , when I use the command, it created and shows that it exist since I want to do it again.  
 
-- For mount point, we need to use the flag CLONE_NEWNS and precise a mounting point.This mounting point have been handled using C via the following code snippet.
 
 ## Create mountpoint
+
+- For mount point, we need to use the flag CLONE_NEWNS and precise a mounting point.This mounting point have been handled using C via the following code snippet.
+
 
 
 ## Benchmark [ Your container, host machine, LXC, Docker ]
