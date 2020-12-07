@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
   return EXIT_SUCCESS;
 }
 ```
-
+![](images/process.png)
 ## Isolate it using namespaces
 - This new process is isolated using the CLONE_NEWPID flag.this helps the process to see only this pid.
 
