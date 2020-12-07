@@ -272,6 +272,28 @@ When this folder is created, CGroup generates files inside that describe the rul
 
 ![](images/cgroup.png)
 
+To attach the process we will write the process identifier (PID) of our process to the file cgroup.procs.
+
+```
+void write_rule(const char* path, const char* value) {
+  int fp = open(path, O_WRONLY | O_APPEND );
+  write(fp, value, strlen(value));
+  close(fp);
+}
+
+
+void limitProcessCreation() {
+  // create a folder
+  mkdir( PID_CGROUP_FOLDER, S_IRUSR | S_IWUSR);  
+
+  //getpid() give us a integer and we transform it to a string.
+  const char* pid  = std::to_string(getpid()).c_str();
+
+  write_rule(concat(CGROUP_FOLDER, "cgroup.procs"), pid);
+}
+```
+The process id has been registered, next we need to write to the file pids.max to limit the number of processes that the children process can create.
+
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
 - I benchmarked on cpu, memory, fileio, threading using the following commands respectively:
