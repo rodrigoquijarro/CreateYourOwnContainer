@@ -270,10 +270,7 @@ We will create the following path:
 ```
 When this folder is created, CGroup generates files inside that describe the rules and states of the processes in that group for the process attached.
 
-```
-/sys/fs/cgroup/pids/container/$ ls  
-cgroup.clone_children  cgroup.procs  notify_on_release  pids.current  pids.events  pids.max  tasks
-```
+![](images/cgroup.png)
 
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
