@@ -296,6 +296,8 @@ The process id has been registered, next we need to write to the file pids.max t
 
 ![](images/limits1.png)
 
+Performance can be controled by how much each container consume and playing with the cgroup rules. Orchestrator like Openshift and Kubernetes perform the this tasks throgh interfaces.
+
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
 - I benchmarked on cpu, memory, fileio, threading using the following commands respectively:
