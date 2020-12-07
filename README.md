@@ -129,13 +129,23 @@ By now the program can mess with other programs, for example network file sharin
   
 The new process will be isolated with the CLONE_NEWPID, identified with only this pid. A process which is isolated from the other process will have its own pid to be `1`.
 
+```
+int main(int argc, char** argv) {
+  ROD( clone(rod, stack_memory(), CLONE_NEWUTS | CLONE_NEWPID | SIGCHLD, 0), "clone" );
+
+  printf("parent pid: %d\n", getpid());
+  wait(nullptr);
+  return EXIT_SUCCESS;
+```
+- CLONE_NEWUTS permit the container to have his own hostname.
+
 ![](images/namecontainer.png)
 
 - CLONE_NEWUSER enable the container to manage `user` and `group`. 
 
 - CLONE_NEWNET, is used for Networking, allowing the container just to look it's own network designed interface (loopback).
 
-I supplied flags for this PoC, the flag CLONE_NEWUTC is for container hostname, where when clone() is called it allow the container have its own hostname as in the snippet below.I also added some C code to give the container a custom name.
+
 
 - Below we can see the network interface for the child process with respect to that of the main host. 
 
