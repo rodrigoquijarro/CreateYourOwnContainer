@@ -129,7 +129,9 @@ By now the program can mess with other programs, for example network file sharin
   
 The new process will be isolated with the CLONE_NEWPID, identified with only this pid. A process which is isolated from the other process will have its own pid to be `1`.
 
-![](images/ropid.png)
+![](images/namecontainer.png)
+
+
 
 ![](images/roparentpid.png)
 
