@@ -317,3 +317,16 @@ sysbench --num-threads=16 --test=fileio --file-total-size=10G --file-test-mode=r
 
 - Also for testing process, especially for conatiner, we need to place the different benchmark commands in the system function system("Benchmark commands here"), and run.The different commands can be found in the document report. or the one provided above.
 References
+
+## References
+
+1. https://www.toptal.com/linux/separation-anxiety-isolating-your-system-with-linux-namespaces
+2. https://man7.org/linux/man-pages/man2/clone.2.html
+3. https://man7.org/linux/man-pages/man2/wait.2.html
+4. https://cesarvr.github.io/post/2018-05-22-create-containers/
+5. https://discuss.linuxcontainers.org/t/memory-limits-no-longer-being-applied/7429
+6. https://linux.die.net/man/3/execvp 
+7. https://man7.org/linux/man-pages/man2/getpid.2.html
+8. https://github.com/yobasystems/alpine
+9. https://man7.org/linux/man-pages/man2/mount.2.html
+10. https://en.cppreference.com/w/cpp/language/lambda
