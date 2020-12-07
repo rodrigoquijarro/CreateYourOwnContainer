@@ -167,9 +167,67 @@ static int child_fn() {
 ```
 ## Create mountpoint
 
+The task implement is basically the isolation of a process inside the folder, such that it will not be allowed to access folders outside of the container.
+### Folders our process can access
+```
+----------------------------
+                 1
+                 |
+              2 --- 3  
+              |
+            ------
+            |    |
+           4.1  5.2
+ ```
+To acomplish the task we will use a function called setupFileSystem, then the root will be changed of the folder using chroot and the process to jump to the new root folder (/).
 
+In order to permit the use of tools into the conatianer like (ls, cd, etc..), we will use the Linux base folder that include all these tools, obtained from Alpine Linux, as we already know, very lightweight. 
 
+The following process is explained step by step and the additionals folder that needs to be created.
 
+1. Create the following directories inside the same path.
+```
+mkdir root && cd root
+curl -Ol http://nl.alpinelinux.org/alpine/v3.7/releases/x86_64/alpine-minirootfs-3.7.0-x86_64.tar.gz
+```
+2. uncompress the content into the same leve
+```
+tar -xvf alpine-minirootfs-3.7.0_rc1-x86_64.tar.gz
+```
+
+In the configuration we will use some environment variables, so we will be able to use shell to find the binaries and other processes to know what type of screen we have for example, replacing clearenv with the function..
+
+```
+void setup_variables() {
+  clearenv();
+  setenv("TERM", "xterm-256color", 0);
+  setenv("PATH", "/bin/:/sbin/:usr/bin:/usr/sbin", 0);
+}
+
+void setup_root(const char* folder){
+  chroot(folder);
+  chdir("/");
+}
+
+int rod(void *args) {
+  printf("child process: %d", getpid());
+
+  setup_variables();
+  setup_root("./root");
+
+  run("/bin/sh");
+  return EXIT_SUCCESS;
+}
+
+int main(int argc, char** argv) {
+  printf("parent %d", getpid());
+
+  clone(rod, stack_memory(), CLONE_NEWPID | CLONE_NEWUTS | SIGCHLD, 0);
+  wait(nullptr);
+  return EXIT_SUCCESS;
+}
+
+```
 
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
