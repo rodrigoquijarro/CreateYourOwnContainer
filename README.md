@@ -230,7 +230,32 @@ int main(int argc, char** argv) {
 ```
 ![](images/isofilesystem.png)
 
+In order to mount and unmount a file system in Linux we will use the mount system call.
 
+```
+mount("proc", "/proc", "proc", 0, 0);
+```
+The first parameter is the resource, the second is the folder destination and the third parameter is the type of file system.
+
+```
+umount("/proc");
+  return EXIT_SUCCESS;
+```
+
+The process creation instructions will be grouped into a reusable function:
+
+```
+int main(int argc, char** argv) {
+  printf("parent %d", getpid());
+
+  clone(rod, stack_memory(), CLONE_NEWPID | CLONE_NEWUTS | SIGCHLD, 0);
+  wait(nullptr);
+
+  return EXIT_SUCCESS;
+```
+Additionally the code implemented will use the C++ feature named `Lambda` which is an in-line function, and to plug it in the generic typed clone_process.
+
+![](images/sleep.png)
 
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
