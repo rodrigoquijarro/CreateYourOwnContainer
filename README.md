@@ -1,5 +1,22 @@
-# CreateYourOwnContainer
-## Create child process
+# Creating Your Own Container
+
+## Objetive
+
+The objetive of this lab is to create our own container, this will be done using a `C` program, review the technology and concepts to implement in a proper way processes isolation in Linux. 
+
+## Creating a process
+
+To create a new process we are going to create a new process and execute another one inside, in this way we can keep the control of the process. The process will be called `rod`
+```
+  +----------+  
+  | parent   |
+  |----------|
+  | main()   |
+  |----------|
+  | rod()    |  
+  +----------+
+```  
+## Creating a child process
 - To create a child process we have to create a child function with its own pid such that the child thinks that there is no other process runing.We do that by calling the clone() function with the CLONE_NEWPID flag.We can also use a different system call called unshare to do similar task.Once we call clone(), is called with the flag added, the new process starts within a new PID namespace, under a new process tree.
 - We can add many flags to the clone() function depending on what we want to be isolated from the containter point of view.
 
