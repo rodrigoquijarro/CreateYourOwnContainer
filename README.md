@@ -131,34 +131,13 @@ The new process will be isolated with the CLONE_NEWPID, identified with only thi
 
 ![](images/namecontainer.png)
 
+- CLONE_NEWUSER enable the container to manage `user` and `group`. 
+
+- CLONE_NEWNET, is used for Networking, allowing the container just to look it's own network designed interface (loopback).
 
 
-![](images/roparentpid.png)
+I supplied flags for this PoC, the flag CLONE_NEWUTC is for container hostname, where when clone() is called it allow the container have its own hostname as in the snippet below.I also added some C code to give the container a custom name.
 
-![](images/ronoparentpid.png)
-
-![](images/roconex.png)
-
-![](images/roconex2.png)
-
-![](images/roveth.png)
-
-- I supplied flags for this PoC, the flag CLONE_NEWUTC is for container hostname, where when clone() is called it allow the container have its own hostname as in the snippet below.I also added some C code to give the container a custom name.
-
-```
- // sethostname
-        const char * new_hostname = "my container";
-        if (sethostname(new_hostname, strlen(new_hostname)) != 0) {
-                fprintf(stderr, "failed to execvp argments %s\n",
-                        strerror(errno));
-                exit(-1);
-        }
-```
-
-
-- Meanwhile on the other hand the flag CLONE_NEWUSER enable the container to handle its own user and group.In this case since we did not create one , it will have nobody as user as seen below. 
-
-- For Networking , I used the flag CLONE_NEWNET, which allow the container to look only it's own network interface. It is usually loopback if there are no other explicitely set up network interface.
 
 - Below we can see the network interface for the child process with respect to that of the main host. 
 
@@ -172,42 +151,8 @@ For example for the pid 4 found in /proc , when I use the command, it created an
 
 - For mount point, we need to use the flag CLONE_NEWNS and precise a mounting point.This mounting point have been handled using C via the following code snippet.
 
+## Create mountpoint
 
-        // mount proc
-        if (umount("/proc", 0) != 0) {
-                fprintf(stderr, "failed unmount /proc %s\n",
-                        strerror(errno));
-                exit(-1);
-        }
-        if (mount("proc", "/proc", "proc", 0, "") != 0) {
-                fprintf(stderr, "failed mount /proc %s\n",
-                        strerror(errno));
-                exit(-1);
-        }
-
-- The easiest way to mount proc can simply be using the command :
-mount proc /proc -t proc
-- In some cases, chroot() can also be used as well.
-- We need to create a virtual disk using the loop tool.This will host the file system of our containter.
-- We use the following commands:
-- Using dd command I create 10G of zerod file.i.e full with zeros.
-
-dd if=/dev/zero of=files.fs bs=1024 count=10000000
-
-- Then I used the command losetup -f to tell me which /dev/loop is free.
-- Next, losetup /dev/loop1 file.fs
-- We use the ext4 file system via the command below using the tool mkfs :
-
-mkfs -t ext4 /dev/loop1 
-
-- We mount to the mnt directory using the command :
-
-mkdir mnt
-mount -t ext4 /dev/loop1 /mnt
-
-- We verify using the mount | grep mnt 
-
-- We can see that there is a new file created and all works. 
 
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
