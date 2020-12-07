@@ -145,24 +145,29 @@ int main(int argc, char** argv) {
 
 - CLONE_NEWNET, is used for Networking, allowing the container just to look it's own network designed interface (loopback).
 
-
-
-- Below we can see the network interface for the child process with respect to that of the main host. 
+- Below is showing the network interface for the child process, parent `PID` adn child `PID`.
 
 ![](images/networking.png)
 
-- But for us to make the two processes , parent and child process each manage thier network interfaces, we need to create a pair of virtual Ethernet connections using the following command:
+- Parent and child process will manage thier own network interfaces, but this task will be created with a pair of virtual Ethernet connections executing: 
 
+```
 ip link add name veth0 type veth peer name veth1 netns <pid>
+```
+- Where `veth0` device is for the parent namespace and `veth1` device for the child namespace device.
 
-- Where <pid is the process id of the child namespace, veth0 device is for the parent namespace and veth1 device for the child namespace device.We enter new namespace using the netns.
+```
+static int child_fn() {
+  printf("New `net` Namespace:\n");
+  system("ip link");
+  printf("\n\n");
+  return 0;
+}
 
-For example for the pid 4 found in /proc , when I use the command, it created and shows that it exist since I want to do it again.  
-
-
+```
 ## Create mountpoint
 
-- For mount point, we need to use the flag CLONE_NEWNS and precise a mounting point.This mounting point have been handled using C via the following code snippet.
+
 
 
 
