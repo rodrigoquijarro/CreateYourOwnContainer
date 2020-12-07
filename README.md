@@ -257,6 +257,24 @@ Additionally the code implemented will use the C++ feature named `Lambda` which 
 
 ![](images/sleep.png)
 
+## CGroups for qouting
+
+Now we will use CGroups to limit the amount of processes that can be created inside the container, the control group called pids controller can be used to limit the amount of times a process can replicate itself. In this case a clone funtion.
+
+For this example I’ll use the Linux I/O interface by excellence which is open, write, read and close. Now the next step is to understand what folder or files we need to modify.
+
+We will create the following path:
+
+```
+/sys/fs/cgroup/pids/container/
+```
+When this folder is created, CGroup generates files inside that describe the rules and states of the processes in that group for the process attached.
+
+```
+/sys/fs/cgroup/pids/container/$ ls  
+cgroup.clone_children  cgroup.procs  notify_on_release  pids.current  pids.events  pids.max  tasks
+```
+
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
 - I benchmarked on cpu, memory, fileio, threading using the following commands respectively:
