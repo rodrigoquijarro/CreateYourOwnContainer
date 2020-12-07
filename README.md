@@ -294,6 +294,8 @@ void limitProcessCreation() {
 ```
 The process id has been registered, next we need to write to the file pids.max to limit the number of processes that the children process can create.
 
+![](images/limits.png)
+
 ## Benchmark [ Your container, host machine, LXC, Docker ]
 
 - I benchmarked on cpu, memory, fileio, threading using the following commands respectively:
